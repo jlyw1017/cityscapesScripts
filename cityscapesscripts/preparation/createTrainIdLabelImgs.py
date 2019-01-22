@@ -63,6 +63,7 @@ def main():
     # quit if we did not find anything
     '''
     在python中 None,  False, 空字符串"", 0, 空列表[], 空字典{}, 空元组()都相当于False
+    这里这个检查不太好，因为没检查图片为空的情形，只检查了label
     '''
     if not files:
         printError( "Did not find any files. Please consult the README." )
