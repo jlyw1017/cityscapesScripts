@@ -30,11 +30,23 @@ from cityscapesscripts.preparation.json2labelImg import json2labelImg
 # The main method
 def main():
     # Where to look for Cityscapes
+    '''
+     __file__ 得到当前文件路径
+     但是若按绝对路径执行该文件，得到绝对路径
+     若按相对路径，或者在sys.path下执行，则得到相对路径。
+     为了保证得到绝对路径，用os.path.realpath()
+     os.path.dirname获得该文件所在的文件夹名称
+     os.path.join，组合成 目录/../..表示当前目录网上两次。
+    '''
     if 'CITYSCAPES_DATASET' in os.environ:
-        cityscapesPath = os.environ['CITYSCAPES_DATASET']
+        cityscapesPath = os.environ['CITYSCAPES_DATASET']#
     else:
         cityscapesPath = os.path.join(os.path.dirname(os.path.realpath(__file__)),'..','..')
     # how to search for all ground truth
+    '''
+    在文件往上两个的目录，即cityscapes根目录下，找gtFine的目录。
+    加上*方便glob
+    '''
     searchFine   = os.path.join( cityscapesPath , "gtFine"   , "*" , "*" , "*_gt*_polygons.json" )
     searchCoarse = os.path.join( cityscapesPath , "gtCoarse" , "*" , "*" , "*_gt*_polygons.json" )
 
@@ -49,6 +61,9 @@ def main():
     # files = filesFine # use this line if fine is enough for now.
 
     # quit if we did not find anything
+    '''
+    在python中 None,  False, 空字符串"", 0, 空列表[], 空字典{}, 空元组()都相当于False
+    '''
     if not files:
         printError( "Did not find any files. Please consult the README." )
 
@@ -61,17 +76,20 @@ def main():
     for f in files:
         # create the output filename
         dst = f.replace( "_polygons.json" , "_labelTrainIds.png" )
-
-        # do the conversion
+        '''
+        替换并建一个新的list放图片。这里是选其中labelTrainIds这个类型
+        '''
+        # do the conversion 
         try:
             json2labelImg( f , dst , "trainIds" )
         except:
             print("Failed to convert: {}".format(f))
             raise
 
-        # status
+        # status 更新进度条
         progress += 1
         print("\rProgress: {:>3} %".format( progress * 100 / len(files) ), end=' ')
+        # 输出刷新
         sys.stdout.flush()
 
 
