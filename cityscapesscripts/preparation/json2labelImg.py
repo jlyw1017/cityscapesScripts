@@ -16,11 +16,18 @@
 #
 
 # python imports
+'''
+__future__ 在python2中体验python3
+'''
 from __future__ import print_function, absolute_import, division
 import os, sys, getopt
 
 # Image processing
 # Check if PIL is actually Pillow as expected
+'''
+Python Imaging Library，已经是Python平台事实上的图像处理标准库了
+sys.exit(-1) tells the program to quit
+'''
 try:
     from PIL import PILLOW_VERSION
 except:
