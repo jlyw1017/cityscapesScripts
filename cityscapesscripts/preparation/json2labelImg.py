@@ -86,9 +86,11 @@ def createLabelImage(annotation, encoding, outline=None):
     if encoding == "color":
         labelImg = Image.new("RGBA", size, background)
     else:
+    # "L"模式为 8-bit pixels 黑白 uint型
         labelImg = Image.new("L", size, background)
 
-    # a drawer to draw into the image
+    # a drawer to draw into the image drawer是一个画图工具，读取了新建的图片后可以在上面按照json来画图
+  
     drawer = ImageDraw.Draw( labelImg )
 
     # loop over all objects
@@ -140,7 +142,9 @@ def createLabelImage(annotation, encoding, outline=None):
 def json2labelImg(inJson,outImg,encoding="ids"):
     annotation = Annotation()
     annotation.fromJsonFile(inJson)
+    # 调用上面的函数，根据annotation来画图
     labelImg   = createLabelImage( annotation , encoding )
+    # PIL的Image的保存函数
     labelImg.save( outImg )
 
 # The main method, if you execute this script directly
